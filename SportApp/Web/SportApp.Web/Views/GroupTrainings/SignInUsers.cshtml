@@ -1,0 +1,38 @@
+﻿@model SportApp.Web.ViewModels.Users.BookedUsersViewModel
+
+@{
+    ViewData["Title"] = "Sign in users";
+}
+
+<h1>Booked users for @Model.TrainerName</h1>
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                UserName
+            </th>
+            <th>
+                Phone number
+            </th>
+            <th>
+                Email
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.BookedUsers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

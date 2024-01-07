@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SportApp.Common
+@using SportApp.Data.Models
+@model SportApp.Web.ViewModels.Trainers.TrainersListViewModel
+@inject UserManager<ApplicationUser> UserManager
+@{
+    this.ViewData["Title"] = "All Trainers";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+<div>
+    <a asp-action="RequestTrainerForm" class="btn btn-success">Request for trainer</a>
+    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    {
+        <a asp-action="AllRequestsForTrainer" class="btn btn-primary">Trainer requests</a>
+    }
+    <form method="POST" class="col-md-6 offset-md-3">
+        <label for="looking">Name of trainer</label>
+        <input name="looking" type="text" placeholder="Your looking training goes here" />
+        <input type="submit" class="btn btn-success" />
+    </form>
+</div>
+<hr />
+<div class="row">
+    @foreach (var trainer in this.Model.Trainers)
+    {
+        <div class="media col-md-3">
+            <img class="mr-3" src="@trainer.ImageUrl" width="200" height="200">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a asp-action="ById" asp-route-id="@trainer.Id">
+                        @trainer.Name
+                    </a>
+                </h5>
+                @trainer.CategoryName
+            </div>
+        </div>
+    }
+</div>
+<partial name="_PagingPartial" model="@this.Model" />

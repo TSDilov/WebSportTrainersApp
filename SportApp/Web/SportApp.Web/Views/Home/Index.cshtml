@@ -1,0 +1,30 @@
+﻿@using SportApp.Common
+@model SportApp.Web.ViewModels.Trainers.TrainersListViewModel
+@{
+    this.ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
+    <div>
+        <p>
+            <h3>
+                <em>
+                    Top Trainers:
+                </em>
+            </h3>
+        </p>
+        <ul class="list-group">
+            @foreach (var trainer in this.Model.Trainers)
+            {
+                <li class="list-group-item bg-info">
+                    <a asp-controller="Trainers" asp-action="ById" asp-route-id="@trainer.Id">@trainer.Name</a>
+                </li>       
+            }
+        </ul>
+    </div>
+    <br>
+    <img src="images/sport-congresse.jpg" class="img-fluid" alt="Sample Photo" />
+</div>
+
+

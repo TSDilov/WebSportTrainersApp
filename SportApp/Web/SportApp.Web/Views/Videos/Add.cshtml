@@ -1,0 +1,22 @@
+﻿@model SportApp.Web.ViewModels.VideoModel
+@{
+    this.ViewData["Title"] = "Add new video";
+}
+<h1 class="col-md-6 offset-md-3">@this.ViewData["Title"]</h1>
+
+<form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Video"></label>
+        <input asp-for="Video" class="form-control" />
+        <span asp-validation-for="Video" class="text-danger"></span>
+    </div>
+    <br />
+    <br>
+    <input type="submit" class="btn btn-primary" />
+</form>

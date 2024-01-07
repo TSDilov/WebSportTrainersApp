@@ -1,0 +1,73 @@
+﻿@model SportApp.Web.ViewModels.Trainers.TrainerRequestsViewModel
+
+@{
+    ViewData["Title"] = "Trainer Requests list";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                InfoCard
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                PhoneNumber
+            </th>
+            <th>
+                DateOfBirth
+            </th>
+            <th>
+                PricePerTraining
+            </th>
+            <th>
+                CategoryOfTraining
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TrainersRequests)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InfoCard)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PricePerTraining)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryOfTraining)
+                </td>
+                <td>
+                    <a asp-action="ApprovedTrainer" asp-route-userId="@item.UserId" asp-route-requestTrainerId="@item.Id">Approved</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

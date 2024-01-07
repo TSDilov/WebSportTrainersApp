@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SportApp.Data.Models
+@model SportApp.Web.ViewModels.Trainers.RequestTrainerInputModel
+@inject UserManager<ApplicationUser> UserManager
+@{
+    this.ViewData["Title"] = "Trainer Request";
+}
+<h1 class="col-md-6 offset-md-3">Please fill the fields to send you trainer request!</h1>
+
+<form method="post" class="col-md-6 offset-md-3">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="UserId" value="@UserManager.GetUserId(User)" type="hidden">
+    <div class="form-group">
+        <label asp-for="Username"></label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InfoCard"></label>
+        <textarea asp-for="InfoCard" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="InfoCard" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfBirth"></label>
+        <input asp-for="DateOfBirth" class="form-control" />
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PricePerTraining"></label>
+        <input asp-for="PricePerTraining" class="form-control" />
+        <span asp-validation-for="PricePerTraining" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryOfTraining"></label>
+        <input asp-for="CategoryOfTraining" class="form-control">
+        <span asp-validation-for="CategoryOfTraining" class="text-danger"></span>
+    </div>
+    <br />
+    <br>
+    <input type="submit" class="btn btn-primary" />
+</form>

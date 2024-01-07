@@ -1,0 +1,27 @@
+﻿@using System.Security.Claims
+@model SportApp.Web.ViewModels.Comment.CommentsViewModel
+
+@foreach (var comment in Model.Comments)
+{
+    <hr style="height: 5px;" class="bg-dark" />
+    <div>
+        <div>
+            From: @comment.Name
+            <div class="float-end">
+                @comment.Subject
+            </div>
+        </div>
+        <div>
+            Comment: @comment.Message
+        </div>
+        @if (this.User.FindFirst(ClaimTypes.NameIdentifier).Value == comment.ApplicationUserId)
+        {
+            <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id"
+                                onclick="return confirm('Are you sure you want to delete comment?')">
+                                Delete
+            </a>
+        }       
+    </div>
+}
+<br />
+<a class="btn btn-primary" asp-action="ById" asp-route-id="@Model.TrainerId">Back to trainer profile</a>

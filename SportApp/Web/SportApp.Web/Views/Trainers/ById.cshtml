@@ -1,0 +1,147 @@
+﻿@model SportApp.Web.ViewModels.Trainers.SingleTrainerViewModel
+@{
+    this.ViewData["Title"] = Model.Name;
+}
+<div class="row no-gutters align-items-center">
+	<div class="col-md-6">
+		<img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid w-100">
+	</div>
+	<div class="col-md-6">
+		<div class="card-body team-wrap pl-4">
+			<h3 class="card-title text-color">@Model.Name</h3>
+			<h6 class="card-subtitle pb-4 letter-spacing">@Model.CategoryName</h6>
+			<div>
+                <p>Rating: @Model.Rating</p>
+				<p>Date of birth: @Model.DateOfBirth.Day/@Model.DateOfBirth.Month/@Model.DateOfBirth.Year</p>
+                <p>Email: @Model.Email</p>
+                <p>Phone: @Model.PhoneNumber</p>
+				<p>Price Per Training: @Model.PricePerTraining</p>
+                <p>People training with this trainer: @Model.UsersBooked</p>
+			</div>			
+			<p class="mb-5">@Model.InfoCard</p>
+            <div class="col-12 col-md-4">
+                <div class="receipe-ratings text-right my-5">
+                    <div class="ratings">
+                        <i class="fas fa-star" data-vote="1"></i>
+                        <i class="fas fa-star" data-vote="2"></i>
+                        <i class="fas fa-star" data-vote="3"></i>
+                        <i class="fas fa-star" data-vote="4"></i>
+                        <i class="fas fa-star" data-vote="5"></i>
+                        <div><span id="averageVoteValue">@Model.VotesAverageValue.ToString("0.0")</span><span> / 5</span></div>
+                    </div>
+                    @if (this.User.IsInRole("Administrator"))
+                    {
+                        <a asp-controller="Trainers" asp-action="Edit" asp-route-id="@Model.Id" class="btn delicious-btn">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@Model.Id">
+                            <br>
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want  to delete recipe: @Model.Name ?')">
+                                Delete
+                            </button>
+                        </form>
+
+                    }
+                    <br/>
+                    <div class="row">
+                        <a asp-controller="Trainers" asp-action="Book" asp-route-id="@Model.Id" class="btn btn-primary">Book Trainer</a>
+                        <a asp-controller="Trainers" asp-action="BookedUsers" asp-route-id="@Model.Id" class="btn btn-success">View Booked Users</a>
+                    </div>                 
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+<br>
+<div class="row">
+    <div class="col-12">
+        <div class="section-heading text-left">
+            <h3>Leave a comment</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="contact-form-area">
+            <form>
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <input type="text" class="form-control" id="name" placeholder="Name">                        
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <input type="email" class="form-control" id="email" placeholder="E-mail">
+                    </div>
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="subject" placeholder="Subject">
+                    </div>
+                    <div class="col-12">
+                        <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn delicious-btn mt-30" type="submit" id="commentBtn">Post Comment</button>
+                        <div>
+                            <br />
+                            <a asp-controller="Trainers" asp-action="ShowComments" asp-route-id="@Model.Id" class="btn btn-primary">View comments</a>
+                        </div>                     
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<form method="post" id="antiForgeryForm"></form>
+
+@section Scripts {
+    <script>
+        $("i[data-vote]").each(function (el){
+            $(this).click(function () {
+                let value = $(this).attr("data-vote");
+                let trainerId = @Model.Id;
+                let antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+                let data = { trainerId: trainerId, value: value };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/api/Votes",
+                    data: JSON.stringify(data),
+                    headers: {
+                        'X-CSRF-TOKEN': antiForgeryToken,
+                    },
+                    success: function (data) {
+                        $('#averageVoteValue').html(data.averageVote.toFixed(1));
+                    },
+                    contentType: 'application/json',
+                });
+            });
+        });
+
+        $("#commentBtn").click(function () {
+            let name = $("#name").val();
+            let email = $("#email").val();
+            let subject = $("#subject").val();
+            let message = $("#message").val();
+            let trainerId = @Model.Id;
+            let antiForgeryToken = $('#antiForgeryForm input[name=__RequestVerificationToken]').val();
+            let data = {
+                trainerId,
+                name,
+                email,
+                subject,
+                message,
+            };
+
+            alert("You added a comment!");
+            $.ajax({
+                type: "POST",
+                url: "/api/Comments",
+                data: JSON.stringify(data),
+                headers: {
+                    'X-CSRF-TOKEN': antiForgeryToken,
+                },
+                contentType: 'application/json',
+            });
+        });
+    </script>
+}
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
